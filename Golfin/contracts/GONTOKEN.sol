@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT                                                                             
 
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 import './Security.sol';
 
@@ -75,6 +75,15 @@ contract SVCToken is Security {
         _spendAllowance(account, _msgSender(), value);
         _burn(account, value);
     }
+
+    /**
+    * @dev Mints `amount` tokens to `account`. Only callable by the owner.
+    */
+   function mint(uint256 amount) public onlyOwner {
+        _mint(_msgSender(), amount);
+    }
+
+
     /**
     * @dev Sets `amount` as the allowance of `spender` over the caller's tokens.
     */
