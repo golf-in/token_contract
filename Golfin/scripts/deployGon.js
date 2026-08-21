@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 
 const main = async () => {
-  const contractName = 'SVCToken'
+  const contractName = 'AQCNToken'
 
   const contractFactory = await ethers.getContractFactory(contractName)
 

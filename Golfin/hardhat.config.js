@@ -2,6 +2,7 @@ require('@nomicfoundation/hardhat-toolbox')
 require('@openzeppelin/hardhat-upgrades')
 require('hardhat-contract-sizer')
 require('dotenv').config()
+require("@nomicfoundation/hardhat-toolbox");
 require("@nomicfoundation/hardhat-verify");
 
 
@@ -33,10 +34,13 @@ const MUMBAI_RPC_URL = process.env.MUMBAI_RPC_URL
  * @dev Export the configuration.
  */
 module.exports = {
+  // ...
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY
+    apiKey: ETHERSCAN_API_KEY,
   },
-
+  sourcify: {
+    enabled: false
+  },
   solidity: {
     compilers: [
       {

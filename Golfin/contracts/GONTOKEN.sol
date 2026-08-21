@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import './Security.sol';
 
-contract SVCToken is Security {
+contract AQCNToken is Security {
 
     string private _name;
     string private _symbol;
@@ -16,11 +16,11 @@ contract SVCToken is Security {
     mapping(address => mapping(address => uint256)) private _allowances;
 
     constructor() {
-        _name = "Seven Chain";
-        _symbol = "SVC";
+        _name = "AquaChain";
+        _symbol = "AQCN";
         _decimals = 18;
 
-        _mint(_msgSender(), 5000000000  * 10 ** 18);
+        _mint(_msgSender(), 10000000000  * 10 ** 18);
     }
 
     /**
@@ -89,7 +89,7 @@ contract SVCToken is Security {
     */
     function approve(address spender, uint256 amount) public whenNotPaused returns (bool) {
         address owner = _msgSender();
-        require(!isBlackListed[owner], "SVC: locked account");
+        require(!isBlackListed[owner], "AQCN: locked account");
         _approve(owner, spender, amount);
         return true;
     }
@@ -99,7 +99,7 @@ contract SVCToken is Security {
      */
     function increaseAllowance(address spender, uint256 addedValue) public whenNotPaused returns (bool) {
         address owner = _msgSender();
-        require(!isBlackListed[owner], "SVC: locked account");
+        require(!isBlackListed[owner], "AQCN: locked account");
         _approve(owner, spender, allowance(owner, spender) + addedValue);
         return true;
     }
@@ -111,8 +111,8 @@ contract SVCToken is Security {
         address owner = _msgSender();
         uint256 currentAllowance = allowance(owner, spender);
 
-        require(!isBlackListed[owner], "SVC: locked account");
-        require(currentAllowance >= subtractedValue, "SVC: decreased allowance below zero");
+        require(!isBlackListed[owner], "AQCN: locked account");
+        require(currentAllowance >= subtractedValue, "AQCN: decreased allowance below zero");
         unchecked {
             _approve(owner, spender, currentAllowance - subtractedValue);
         }
@@ -125,7 +125,7 @@ contract SVCToken is Security {
     */
     function transfer(address to, uint256 amount) public whenNotPaused returns (bool) {
         address owner = _msgSender();
-        require(!isBlackListed[owner], "SVC: locked account");
+        require(!isBlackListed[owner], "AQCN: locked account");
         _transfer(owner, to, amount);
         return true;
     }
@@ -137,7 +137,7 @@ contract SVCToken is Security {
     */
     function transferFrom(address from, address to, uint256 amount) public whenNotPaused returns (bool) {
         address spender = _msgSender();
-        require(!isBlackListed[from], "SVC: locked account");
+        require(!isBlackListed[from], "AQCN: locked account");
         _spendAllowance(from, spender, amount);
         _transfer(from, to, amount);
         return true;
@@ -148,7 +148,7 @@ contract SVCToken is Security {
       ////////////////////////////////////////////////*/
 
     function _mint(address account, uint256 amount) internal {
-        require(account != address(0), "SVC: mint to the zero address");
+        require(account != address(0), "AQCN: mint to the zero address");
 
         _beforeTokenTransfer(address(0), account, amount);
 
@@ -163,12 +163,12 @@ contract SVCToken is Security {
     }
 
     function _burn(address account, uint256 amount) internal {
-        require(account != address(0), "SVC: burn from the zero address");
+        require(account != address(0), "AQCN: burn from the zero address");
 
         _beforeTokenTransfer(account, address(0), amount);
 
         uint256 accountBalance = _balances[account];
-        require(accountBalance >= amount, "SVC: burn amount exceeds balance");
+        require(accountBalance >= amount, "AQCN: burn amount exceeds balance");
         unchecked {
             _balances[account] = accountBalance - amount;
             // Overflow not possible: amount <= accountBalance <= totalSupply.
@@ -181,8 +181,8 @@ contract SVCToken is Security {
     }
 
     function _approve(address owner, address spender, uint256 amount) internal {
-        require(owner != address(0), "SVC: approve from the zero address");
-        require(spender != address(0), "SVC: approve to the zero address");
+        require(owner != address(0), "AQCN: approve from the zero address");
+        require(spender != address(0), "AQCN: approve to the zero address");
 
         _allowances[owner][spender] = amount;
         emit Approval(owner, spender, amount);
@@ -191,7 +191,7 @@ contract SVCToken is Security {
     function _spendAllowance(address owner, address spender, uint256 amount) internal virtual {
         uint256 currentAllowance = allowance(owner, spender);
         if (currentAllowance != type(uint256).max) {
-            require(currentAllowance >= amount, "SVC: insufficient allowance");
+            require(currentAllowance >= amount, "AQCN: insufficient allowance");
             unchecked {
                 _approve(owner, spender, currentAllowance - amount);
             }
@@ -199,13 +199,13 @@ contract SVCToken is Security {
     }
 
     function _transfer(address from, address to, uint256 amount) internal {
-        require(from != address(0), "SVC: transfer from the zero address");
-        require(to != address(0), "SVC: transfer to the zero address");
+        require(from != address(0), "AQCN: transfer from the zero address");
+        require(to != address(0), "AQCN: transfer to the zero address");
 
         _beforeTokenTransfer(from, to, amount);
 
         uint256 fromBalance = _balances[from];
-        require(fromBalance >= amount, "SVC: transfer amount exceeds balance");
+        require(fromBalance >= amount, "AQCN: transfer amount exceeds balance");
         unchecked {
             _balances[from] = fromBalance - amount;
             // Overflow not possible: the sum of all balances is capped by totalSupply, and the sum is preserved by
