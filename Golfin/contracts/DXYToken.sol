@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 import './Security.sol';
 
-contract AQCNToken is Security {
+contract DXYToken is Security {
 
     string private _name;
     string private _symbol;
@@ -16,11 +16,11 @@ contract AQCNToken is Security {
     mapping(address => mapping(address => uint256)) private _allowances;
 
     constructor() {
-        _name = "AquaChain";
-        _symbol = "AQCN";
+        _name = "Dexeny";
+        _symbol = "DXY";
         _decimals = 18;
 
-        _mint(_msgSender(), 10000000000  * 10 ** 18);
+        _mint(_msgSender(), 1000000000 * 10 ** 18);
     }
 
     /**
@@ -162,31 +162,6 @@ contract AQCNToken is Security {
         _afterTokenTransfer(address(0), account, amount);
     }
 
-    function _burn(address account, uint256 amount) internal {
-        require(account != address(0), "AQCN: burn from the zero address");
-
-        _beforeTokenTransfer(account, address(0), amount);
-
-        uint256 accountBalance = _balances[account];
-        require(accountBalance >= amount, "AQCN: burn amount exceeds balance");
-        unchecked {
-            _balances[account] = accountBalance - amount;
-            // Overflow not possible: amount <= accountBalance <= totalSupply.
-            _totalSupply -= amount;
-        }
-
-        emit Transfer(account, address(0), amount);
-
-        _afterTokenTransfer(account, address(0), amount);
-    }
-
-    function _approve(address owner, address spender, uint256 amount) internal {
-        require(owner != address(0), "AQCN: approve from the zero address");
-        require(spender != address(0), "AQCN: approve to the zero address");
-
-        _allowances[owner][spender] = amount;
-        emit Approval(owner, spender, amount);
-    }
 
     function _spendAllowance(address owner, address spender, uint256 amount) internal virtual {
         uint256 currentAllowance = allowance(owner, spender);
@@ -197,6 +172,16 @@ contract AQCNToken is Security {
             }
         }
     }
+
+    function _approve(address owner, address spender, uint256 amount) internal {
+        require(owner != address(0), "AQCN: approve from the zero address");
+        require(spender != address(0), "AQCN: approve to the zero address");
+
+        _allowances[owner][spender] = amount;
+        emit Approval(owner, spender, amount);
+    }
+
+    
 
     function _transfer(address from, address to, uint256 amount) internal {
         require(from != address(0), "AQCN: transfer from the zero address");
@@ -218,12 +203,28 @@ contract AQCNToken is Security {
         _afterTokenTransfer(from, to, amount);
     }
 
+     function _burn(address account, uint256 amount) internal {
+        require(account != address(0), "AQCN: burn from the zero address");
+
+        _beforeTokenTransfer(account, address(0), amount);
+
+        uint256 accountBalance = _balances[account];
+        require(accountBalance >= amount, "AQCN: burn amount exceeds balance");
+        unchecked {
+            _balances[account] = accountBalance - amount;
+            // Overflow not possible: amount <= accountBalance <= totalSupply.
+            _totalSupply -= amount;
+        }
+
+        emit Transfer(account, address(0), amount);
+
+        _afterTokenTransfer(account, address(0), amount);
+    }
+
     function _beforeTokenTransfer(address from, address to, uint256 amount) internal {}
     function _afterTokenTransfer(address from, address to, uint256 amount) internal {}
 
-    /*////////////////////////////////////////////////
-                    EVENTS
-      ////////////////////////////////////////////////*/
+  
 
     event Approval(address indexed owner, address indexed spender, uint256 value);
     event Transfer(address indexed from, address indexed to, uint256 value);
