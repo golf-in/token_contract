@@ -89,7 +89,7 @@ contract DXYToken is Security {
     */
     function approve(address spender, uint256 amount) public whenNotPaused returns (bool) {
         address owner = _msgSender();
-        require(!isBlackListed[owner], "AQCN: locked account");
+        require(!isBlackListed[owner], "DXY: locked account");
         _approve(owner, spender, amount);
         return true;
     }
@@ -99,7 +99,7 @@ contract DXYToken is Security {
      */
     function increaseAllowance(address spender, uint256 addedValue) public whenNotPaused returns (bool) {
         address owner = _msgSender();
-        require(!isBlackListed[owner], "AQCN: locked account");
+        require(!isBlackListed[owner], "DXY: locked account");
         _approve(owner, spender, allowance(owner, spender) + addedValue);
         return true;
     }
@@ -111,8 +111,8 @@ contract DXYToken is Security {
         address owner = _msgSender();
         uint256 currentAllowance = allowance(owner, spender);
 
-        require(!isBlackListed[owner], "AQCN: locked account");
-        require(currentAllowance >= subtractedValue, "AQCN: decreased allowance below zero");
+        require(!isBlackListed[owner], "DXY: locked account");
+        require(currentAllowance >= subtractedValue, "DXY: decreased allowance below zero");
         unchecked {
             _approve(owner, spender, currentAllowance - subtractedValue);
         }
@@ -125,7 +125,7 @@ contract DXYToken is Security {
     */
     function transfer(address to, uint256 amount) public whenNotPaused returns (bool) {
         address owner = _msgSender();
-        require(!isBlackListed[owner], "AQCN: locked account");
+        require(!isBlackListed[owner], "DXY: locked account");
         _transfer(owner, to, amount);
         return true;
     }
@@ -137,7 +137,7 @@ contract DXYToken is Security {
     */
     function transferFrom(address from, address to, uint256 amount) public whenNotPaused returns (bool) {
         address spender = _msgSender();
-        require(!isBlackListed[from], "AQCN: locked account");
+        require(!isBlackListed[from], "DXY: locked account");
         _spendAllowance(from, spender, amount);
         _transfer(from, to, amount);
         return true;
@@ -148,7 +148,7 @@ contract DXYToken is Security {
       ////////////////////////////////////////////////*/
 
     function _mint(address account, uint256 amount) internal {
-        require(account != address(0), "AQCN: mint to the zero address");
+        require(account != address(0), "DXY: mint to the zero address");
 
         _beforeTokenTransfer(address(0), account, amount);
 
@@ -166,7 +166,7 @@ contract DXYToken is Security {
     function _spendAllowance(address owner, address spender, uint256 amount) internal virtual {
         uint256 currentAllowance = allowance(owner, spender);
         if (currentAllowance != type(uint256).max) {
-            require(currentAllowance >= amount, "AQCN: insufficient allowance");
+            require(currentAllowance >= amount, "DXY: insufficient allowance");
             unchecked {
                 _approve(owner, spender, currentAllowance - amount);
             }
@@ -174,8 +174,8 @@ contract DXYToken is Security {
     }
 
     function _approve(address owner, address spender, uint256 amount) internal {
-        require(owner != address(0), "AQCN: approve from the zero address");
-        require(spender != address(0), "AQCN: approve to the zero address");
+        require(owner != address(0), "DXY: approve from the zero address");
+        require(spender != address(0), "DXY: approve to the zero address");
 
         _allowances[owner][spender] = amount;
         emit Approval(owner, spender, amount);
@@ -184,13 +184,13 @@ contract DXYToken is Security {
     
 
     function _transfer(address from, address to, uint256 amount) internal {
-        require(from != address(0), "AQCN: transfer from the zero address");
-        require(to != address(0), "AQCN: transfer to the zero address");
+        require(from != address(0), "DXY: transfer from the zero address");
+        require(to != address(0), "DXY: transfer to the zero address");
 
         _beforeTokenTransfer(from, to, amount);
 
         uint256 fromBalance = _balances[from];
-        require(fromBalance >= amount, "AQCN: transfer amount exceeds balance");
+        require(fromBalance >= amount, "DXY: transfer amount exceeds balance");
         unchecked {
             _balances[from] = fromBalance - amount;
             // Overflow not possible: the sum of all balances is capped by totalSupply, and the sum is preserved by
@@ -204,12 +204,12 @@ contract DXYToken is Security {
     }
 
      function _burn(address account, uint256 amount) internal {
-        require(account != address(0), "AQCN: burn from the zero address");
+        require(account != address(0), "DXY: burn from the zero address");
 
         _beforeTokenTransfer(account, address(0), amount);
 
         uint256 accountBalance = _balances[account];
-        require(accountBalance >= amount, "AQCN: burn amount exceeds balance");
+        require(accountBalance >= amount, "DXY: burn amount exceeds balance");
         unchecked {
             _balances[account] = accountBalance - amount;
             // Overflow not possible: amount <= accountBalance <= totalSupply.
